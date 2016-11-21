@@ -33,7 +33,7 @@ int main(){
     index = temp - comm;
     comm[index] = 0;
     f = fork();
-    if(f){
+    if(!f){
       while (comm){
 	s[i]=strsep(&comm, " ");
 	i++;
