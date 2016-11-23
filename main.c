@@ -44,6 +44,7 @@ int main(){
 	printf("%s\n", strerror(errno));
       }
     }
+    wait();
   }
   return 0;
 }
