@@ -1,0 +1,9 @@
+a.out
+hello.txt
+#main.c#
+main.c
+main.c~
+makefile
+README.md
+shell.h
+test
