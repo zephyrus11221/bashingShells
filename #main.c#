@@ -81,8 +81,7 @@ int main(){
     printf("waddya want:");
     fgets(comm, 255, stdin);
     temp = strstr(comm,";");
-    index = temp - (strstr(comm,index));
-    comm[index] = 0;
+     = 0;
     f = fork();
     if(!f){
       while (comm){
