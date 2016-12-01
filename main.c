@@ -88,6 +88,16 @@ int main(){
 	i++;
       }
       s[i] = NULL;
+      strsep(s, ">");
+      if(s){
+	char hold = strsep(s, " ");
+	if(hold){
+	  int fd = open(hold, O_CREAT|O_RDWR, 0644);
+	}
+	if(s){
+	  int fd = open(s, O_CREAT|O_RDWR, 0644);
+	}
+	dup2(fd, stdout);
       if(execvp(s[0], s)){
 	printf("sumting wong in child\n");
 	printf("%s\n", strerror(errno));
