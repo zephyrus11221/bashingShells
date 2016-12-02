@@ -21,17 +21,22 @@ void sigHandle(int sigNum){
 }
 
 int execFork(char * comm){
+  char * source = comm;
+  char * storage[256];
+  int counter = 0;
+  while(source){
+    storage[counter] = strsep(&source, " ");
+    counter++;
+  }
+  storage[counter] = NULL;
   int f;
   f = fork();
   if(!f){
-    // printf("fixedComm[%d]:%s\n",0,fixedComm[0]);
-    execvp(comm[0],comm);
+    execvp(storage[0],storage);
   }
   else{
     int holder;
     wait(&holder);
-    holder = 0;
-    return holder;
   }
 }
 void commCentral(char *comm){
@@ -42,7 +47,6 @@ void commCentral(char *comm){
     int i = 0;
     while(currentProcess){
       fixedComm[i] =strsep(&currentProcess," ");
-      //printf("fixedComm[%d]:%s\n",i,fixedComm[i]);
       i++;
     }
     fixedComm[i] = NULL;
@@ -53,55 +57,13 @@ void commCentral(char *comm){
       exit(0);
     }
     else{
-      int f;
-      f = fork();
-      if(!f){
-	// printf("fixedComm[%d]:%s\n",0,fixedComm[0]);
-	execvp(fixedComm[0],fixedComm);
-      }
-      else{
-	int holder;
-	wait(&holder);
-      }
+      printf("%s\n",currentProcess);
+      execFork(currentProcess);
     }
     commCentral(tempHolder);
   }
 }
 
-/*int * pipe(char *comm){
-  }*/
-int *redirWrite(char *comm){
-  char * commSplit;
-  char * file2;
-  int i =0;
-  int checker = 1;
-  while(i < strlen(comm)){
-    if(strcmp(comm[i]," ")){
-      i++;
-    }
-    else{
-      checker = 0;
-    }
-  }
-  if(checker){
-    int i = strlen(comm);
-    for(;i>0;i--){
-      file2 = strsep(&comm," ");
-    }
-  }
-  else{
-    commSplit = strstr(comm,">");
-    strncpy(file2,commSplit + 1,strlen(commSplit)-1);
-  }
-
-
-  commSplit = strstr(comm,">");
-  char * fileName;
-//strcpy(commSplit,fileName,
-}
-
-  /*int * redirApp(char *comm){
-    }*/
 int main(){
   signal(SIGINT, sigHandle);
   signal(SIGUSR1, sigHandle);
