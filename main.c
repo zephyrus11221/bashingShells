@@ -19,22 +19,55 @@ void sigHandle(int sigNum){
     printf("My parent PID: %d\n",getppid());
   }
 }
-/*int * cd(char *dir){
-  }*/
-int * check(char * comm){
-  char *shellComms =  "cd,>,>>,<,<<,|,&,0";
-  int def = -1;
-  char *temp[256];
-  int i = 0;
-  while(shellComms){
-    temp[i] = strsep(&shellComms,",");
-    if(!strcmp(comm[1],temp[i])){
-      def = 0;
-    }
-    i++;
+
+int execFork(char * comm){
+  int f;
+  f = fork();
+  if(!f){
+    // printf("fixedComm[%d]:%s\n",0,fixedComm[0]);
+    execvp(comm[0],comm);
   }
-  return def;
+  else{
+    int holder;
+    wait(&holder);
+    holder = 0;
+    return holder;
+  }
 }
+void commCentral(char *comm){
+  char * tempHolder = comm;
+  char * fixedComm[256];
+  while(tempHolder){
+    char * currentProcess = strsep(&tempHolder,";");
+    int i = 0;
+    while(currentProcess){
+      fixedComm[i] =strsep(&currentProcess," ");
+      //printf("fixedComm[%d]:%s\n",i,fixedComm[i]);
+      i++;
+    }
+    fixedComm[i] = NULL;
+    if(!strcmp(fixedComm[0],"cd")){
+      chdir(fixedComm[1]);
+    }
+    else if(!strcmp(fixedComm[0],"exit")){
+      exit(0);
+    }
+    else{
+      int f;
+      f = fork();
+      if(!f){
+	// printf("fixedComm[%d]:%s\n",0,fixedComm[0]);
+	execvp(fixedComm[0],fixedComm);
+      }
+      else{
+	int holder;
+	wait(&holder);
+      }
+    }
+    commCentral(tempHolder);
+  }
+}
+
 /*int * pipe(char *comm){
   }*/
 int *redirWrite(char *comm){
@@ -72,46 +105,19 @@ int *redirWrite(char *comm){
 int main(){
   signal(SIGINT, sigHandle);
   signal(SIGUSR1, sigHandle);
-  int fd;
-  char *comm;
-  char *s[256];
-char directory[256];
-  comm = (char*)malloc(sizeof(char *));
-  int i = 0;
-  char *temp;
-  int index, f;
-char hold
+  char directory[256];
+  char comm[256];
   while(1){
     if(getcwd(directory,sizeof(directory))!=NULL){
-      printf("%s#",directory);
+      printf("%s# ",directory);
     }
-    fgets(comm, 255, stdin);
-    temp = strstr(comm,";");
-    index = temp - (strstr(comm,index));
+    fgets(comm,sizeof(comm), stdin);
+    char *temp;
+    temp = strstr(comm,"\n");
+    int index;
+    index = temp - comm;
     comm[index] = 0;
-    f = fork();
-    if(!f){
-      while (comm){
-	s[i]=strsep(&comm, " ");
-	i++;
-      }
-      s[i] = NULL;
-      strsep(s, ">");
-      if(s){
-	hold = strsep(s, " ");
-	if(hold){
-	  fd = open(hold, O_CREAT|O_RDWR, 0644);
-	}
-	if(s){
-	  fd = open(s, O_CREAT|O_RDWR, 0644);
-	}
-	dup2(fd, stdout);
-      if(execvp(s[0], s)){
-	printf("sumting wong in child\n");
-	printf("%s\n", strerror(errno));
-      }
-    }
-      wait(NULL);
-    }
+    commCentral(comm);
+  }
   return 0;
 }

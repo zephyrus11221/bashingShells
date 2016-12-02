@@ -1,7 +1,7 @@
-wao:main.c
+test:main.c
 	gcc main.c -o test
 run:test
 	./test
-clear:clean
+clean:clean
 	rm test
 	rm *~
