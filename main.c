@@ -23,7 +23,7 @@ void sigHandle(int sigNum){
   }*/
 int * check(char * comm){
   char *shellComms =  "cd,>,>>,<,<<,|,&,0";
-  int *def = -1;
+  int def = -1;
   char *temp[256];
   int i = 0;
   while(shellComms){
@@ -51,34 +51,40 @@ int *redirWrite(char *comm){
     }
   }
   if(checker){
-    int i = 2;
+    int i = strlen(comm);
     for(;i>0;i--){
-      file2 = strsep(comm," ");
+      file2 = strsep(&comm," ");
     }
   }
   else{
     commSplit = strstr(comm,">");
-    strncpy(file2,commSplit + 1;strlen(commSplit)-1);
+    strncpy(file2,commSplit + 1,strlen(commSplit)-1);
   }
-}
+
 
   commSplit = strstr(comm,">");
   char * fileName;
-  strcpy(commSplit,fileName,
+//strcpy(commSplit,fileName,
 }
-int * redirApp(char *comm){
-}
+
+  /*int * redirApp(char *comm){
+    }*/
 int main(){
   signal(SIGINT, sigHandle);
   signal(SIGUSR1, sigHandle);
+  int fd;
   char *comm;
   char *s[256];
+char directory[256];
   comm = (char*)malloc(sizeof(char *));
   int i = 0;
   char *temp;
   int index, f;
+char hold
   while(1){
-    printf("waddya want:");
+    if(getcwd(directory,sizeof(directory))!=NULL){
+      printf("%s#",directory);
+    }
     fgets(comm, 255, stdin);
     temp = strstr(comm,";");
     index = temp - (strstr(comm,index));
@@ -92,12 +98,12 @@ int main(){
       s[i] = NULL;
       strsep(s, ">");
       if(s){
-	char hold = strsep(s, " ");
+	hold = strsep(s, " ");
 	if(hold){
-	  int fd = open(hold, O_CREAT|O_RDWR, 0644);
+	  fd = open(hold, O_CREAT|O_RDWR, 0644);
 	}
 	if(s){
-	  int fd = open(s, O_CREAT|O_RDWR, 0644);
+	  fd = open(s, O_CREAT|O_RDWR, 0644);
 	}
 	dup2(fd, stdout);
       if(execvp(s[0], s)){
@@ -105,7 +111,7 @@ int main(){
 	printf("%s\n", strerror(errno));
       }
     }
-    wait();
-  }
+      wait(NULL);
+    }
   return 0;
 }
