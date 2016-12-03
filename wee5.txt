@@ -1,0 +1,12 @@
+a.out
+hello.txt
+main.c
+makefile
+README.md
+shell.h
+test
+wee3.txt
+wee4.txt
+wee5.txt
+wee.c
+wee.txt
