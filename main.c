@@ -27,7 +27,7 @@ void commCentral(char *comm){
     int i = 0;
     while(currentProcess){
       fixedComm[i] =strsep(&currentProcess," ");
-      // printf("fixedComm[%i]: %s\n",i,fixedComm[i]);
+      //printf("fixedComm[%i]: %s\n",i,fixedComm[i]);
       i++;
     }
     fixedComm[i] = NULL;
@@ -41,18 +41,25 @@ void commCentral(char *comm){
       int f;
       f = fork();
       if(!f){
-	if(strchr(fixedComm,'>')!=NULL){
+	//	printf("I'm here 1\n");
+	if(strchr(fixedComm,'>')!=0){
+	  printf("I'm here 2\n");
 	  int storage = dup(STDOUT_FILENO);
-	  printf("%s\n",strstr(fixedComm,">")+1);
-	  char * fileName = strstr(fixedComm,">");
+	  int count = 0;
+	  for(count; strcmp(fixedComm[count],">")!=0; count++){
+	  }
+	  count++;
+	  char * fileName = fixedComm[count];
+	  printf("%s\n",fileName);
 	  int fd;
-	  fd = open(fileName, O_WRONLY | O_CREAT, 0644);
+	  fd = open(fileName, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	  dup2(fd,STDOUT_FILENO);
 	  execvp(fixedComm[0],fixedComm);
 	  dup2(storage,STDOUT_FILENO);
 	  close(fd);
 	}
 	else{
+	  //  printf("I'm here 1\n");
 	  execvp(fixedComm[0],fixedComm);
 	}
       }
