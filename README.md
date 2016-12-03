@@ -7,6 +7,7 @@ By Sebastian Dittgen, Stephan Doan, Matthew Zhu
 *Basic programs such as 'ls' can be called.
 *Redirection works
 *Changing cwd works
+*cd and exit works
 
 ---
 
@@ -19,7 +20,7 @@ By Sebastian Dittgen, Stephan Doan, Matthew Zhu
 
 **Bugs**
 
-*Semicolon usage is gimmicky with white space.
+*Semicolon usage is gimmicky with white space, so you should not put a space before and after the semicolon.
 
 ---
 
