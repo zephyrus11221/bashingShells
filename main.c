@@ -19,6 +19,15 @@ void sigHandle(int sigNum){
     printf("My parent PID: %d\n",getppid());
   }
 }
+void rmChar (char myarray[], int start){
+    char temp;
+    int i;
+    for (i=start; i < sizeof(myarray)/sizeof(myarray[0]); i++){
+        temp = myarray[i];
+        myarray[i] = myarray[i+1];
+        myarray[i+1] = temp;
+    }
+}
 void commCentral(char *comm){
   char * tempHolder = comm;
   while(tempHolder){
@@ -47,6 +56,14 @@ void commCentral(char *comm){
         for(check = 0; fixedComm[check]!= NULL; check++){
 	  if(strchr(fixedComm[check],'>')!= NULL){
 	    checker = 1;
+	  }
+	  if(strchr(fixedComm[check],';')!= NULL){
+	      if(strcmp(fixedComm[check][strchr(fixedComm[check],';')-fixedComm[check]-1], ' ')){
+	          rmChar(fixedComm[check], strchr(fixedComm[check],';')-fixedComm[check]-1);
+	      }
+	      if(strcmp(fixedComm[check][strchr(fixedComm[check],';')-fixedComm[check]+1], ' ')){
+	          rmChar(fixedComm[check], strchr(fixedComm[check],';')-fixedComm[check]+1);
+	      }
 	  }
 	  if(strchr(fixedComm[check],'<')!= NULL){
 	    checker = 2;
