@@ -19,19 +19,6 @@ void sigHandle(int sigNum){
     printf("My parent PID: %d\n",getppid());
   }
 }
-
-void execFork(char * comm){
-  printf("%s\n",comm[0]);
-  int f;
-  f = fork();
-  if(!f){
-    execvp(comm[0],comm);
-  }
-  else{
-    int holder;
-    wait(&holder);
-  }
-}
 void commCentral(char *comm){
   char * tempHolder = comm;
   while(tempHolder){
@@ -40,7 +27,7 @@ void commCentral(char *comm){
     int i = 0;
     while(currentProcess){
       fixedComm[i] =strsep(&currentProcess," ");
-      printf("fixedComm[%i]: %s\n",i,fixedComm[i]);
+      // printf("fixedComm[%i]: %s\n",i,fixedComm[i]);
       i++;
     }
     fixedComm[i] = NULL;
@@ -56,12 +43,14 @@ void commCentral(char *comm){
       if(!f){
 	if(strchr(fixedComm,'>')!=NULL){
 	  int storage = dup(STDOUT_FILENO);
-	  char * fileName = fixedComm[2];
+	  printf("%s\n",strstr(fixedComm,">")+1);
+	  char * fileName = strstr(fixedComm,">");
 	  int fd;
 	  fd = open(fileName, O_WRONLY | O_CREAT, 0644);
 	  dup2(fd,STDOUT_FILENO);
 	  execvp(fixedComm[0],fixedComm);
 	  dup2(storage,STDOUT_FILENO);
+	  close(fd);
 	}
 	else{
 	  execvp(fixedComm[0],fixedComm);
