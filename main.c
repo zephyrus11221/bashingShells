@@ -32,6 +32,8 @@ void commCentral(char *comm){
   char * tempHolder = comm;
   while(tempHolder){
     char * fixedComm[256];
+    int index = 0;
+    int start = 0;
     char * currentProcess = strsep(&tempHolder,";");
     int i = 0;
     while(currentProcess){
@@ -57,16 +59,11 @@ void commCentral(char *comm){
 	  if(strchr(fixedComm[check],'>')!= NULL){
 	    checker = 1;
 	  }
-	  if(strchr(fixedComm[check],';')!= NULL){
-	      if(strcmp(fixedComm[check][strchr(fixedComm[check],';')-fixedComm[check]-1], ' ')){
-	          rmChar(fixedComm[check], strchr(fixedComm[check],';')-fixedComm[check]-1);
-	      }
-	      if(strcmp(fixedComm[check][strchr(fixedComm[check],';')-fixedComm[check]+1], ' ')){
-	          rmChar(fixedComm[check], strchr(fixedComm[check],';')-fixedComm[check]+1);
-	      }
-	  }
 	  if(strchr(fixedComm[check],'<')!= NULL){
 	    checker = 2;
+	  }
+	  if(strchr(fixedComm[check],'|')!=NULL){
+	    checker = 3;
 	  }
 	}
 	if(checker == 1){
@@ -110,6 +107,33 @@ void commCentral(char *comm){
 	  dup2(storage,STDIN_FILENO);
 	  close(fd);
 	}
+	if(checker ==3){
+	  int storage = dup(STDOUT_FILENO);
+	    int count = 0;
+	    int count2 = 0;
+	    char * temp[256];
+	    for(count; strcmp(fixedComm[count],"|")!=0; count++){
+	    }
+	    
+	    int fd;
+	    fd = open("temp.txt", O_RDWR | O_CREAT, 0777);
+	    fixedComm[count] = 0;
+	    dup2(fd,STDOUT_FILENO);
+	    execvp(fixedComm[0],fixedComm);
+	    dup2(storage,STDOUT_FILENO);
+	    close(fd);
+	    
+	    fd = open("temp.txt",O_RDWR,0777);
+	    int storage2 = dup(STDIN_FILENO);
+	    dup2(fd,STDIN_FILENO);
+	    while(count+1 < strlen(fixedComm)){
+	      temp[count2]=fixedComm[count+1];
+	    }
+	    execvp(temp[0],temp);
+	    dup2(storage2,STDIN_FILENO);
+	    remove("temp.txt");
+	}
+	    
 	  else{
 	  //printf("I'm here 1\n");
 	  execvp(fixedComm[0],fixedComm);

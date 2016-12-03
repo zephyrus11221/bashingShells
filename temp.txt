@@ -1,0 +1,9 @@
+a.out
+main.c
+makefile
+README.md
+shell.h
+temp.txt
+test
+wee19.txt
+wee.c
