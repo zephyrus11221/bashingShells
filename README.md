@@ -27,6 +27,8 @@ By Sebastian Dittgen, Stephan Doan, Matthew Zhu
 **Headers**
 
 ~~~
-void commCentral(char *comm);//checks for shell programs, and prepares the child to run them. Includes pipe, cd, and redirections
+void sigHandle(int sigNum);//creates handle for user signal inputs
+void commCentral(char *comm);//checks for shell programs, and prepares the child to run them. Includes pipe, cd, and redirections.
+basically the bread and butter of the file. This is where the magic happens.
 void rmChar (char arr[], int start);//removes the char at the index equal to start of the array myarray[]
 ~~~
