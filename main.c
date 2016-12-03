@@ -62,11 +62,7 @@ void commCentral(char *comm){
 	  if(strchr(fixedComm[check],'<')!= NULL){
 	    checker = 2;
 	  }
-<<<<<<< HEAD
-	  if(strchr(fixedComm[check],'|')!=NULL){
-=======
 	  if(strchr(fixedComm[check],'|')!= NULL){
->>>>>>> 79e1c2ddf2130512b2ddf0af5ae060cf71626380
 	    checker = 3;
 	  }
 	}
@@ -111,7 +107,6 @@ void commCentral(char *comm){
 	  dup2(storage,STDIN_FILENO);
 	  close(fd);
 	}
-<<<<<<< HEAD
 	if(checker ==3){
 	  int storage = dup(STDOUT_FILENO);
 	    int count = 0;
@@ -139,7 +134,6 @@ void commCentral(char *comm){
 	    remove("temp.txt");
 	}
 	    
-=======
 	if(checker == 3){
 	    int storage = dup(STDOUT_FILENO);
 	    int count = 0;
@@ -178,7 +172,6 @@ void commCentral(char *comm){
 	        execvp(temp[0],temp);
 	    }
 	}
->>>>>>> 79e1c2ddf2130512b2ddf0af5ae060cf71626380
 	  else{
 	  //printf("I'm here 1\n");
 	  execvp(fixedComm[0],fixedComm);
