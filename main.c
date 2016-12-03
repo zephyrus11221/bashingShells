@@ -62,7 +62,11 @@ void commCentral(char *comm){
 	  if(strchr(fixedComm[check],'<')!= NULL){
 	    checker = 2;
 	  }
+<<<<<<< HEAD
 	  if(strchr(fixedComm[check],'|')!=NULL){
+=======
+	  if(strchr(fixedComm[check],'|')!= NULL){
+>>>>>>> 79e1c2ddf2130512b2ddf0af5ae060cf71626380
 	    checker = 3;
 	  }
 	}
@@ -107,6 +111,7 @@ void commCentral(char *comm){
 	  dup2(storage,STDIN_FILENO);
 	  close(fd);
 	}
+<<<<<<< HEAD
 	if(checker ==3){
 	  int storage = dup(STDOUT_FILENO);
 	    int count = 0;
@@ -134,6 +139,46 @@ void commCentral(char *comm){
 	    remove("temp.txt");
 	}
 	    
+=======
+	if(checker == 3){
+	    int storage = dup(STDOUT_FILENO);
+	    int count = 0;
+	    int count2 = 0;
+	    char * temp[256];
+	    for(count; strcmp(fixedComm[count],">")!=0; count++){
+	    }
+	    count++;
+	    for(count2; count2 < count - 1; count2++){
+	      temp[count2] = fixedComm[count2];
+	    }
+	    temp[count2] = NULL;
+	    int fd;
+	    fd = open("pipe.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	    dup2(fd,STDOUT_FILENO);
+	    int f2 = fork();
+	    if(f2){
+    	    execvp(temp[0],temp);
+	        dup2(storage,STDOUT_FILENO);
+	        close(fd);
+	    }else{
+	        int holder;
+	        wait(&holder);
+	        count = 0;
+      	    count2 = 0;
+	        for(count; strcmp(fixedComm[count],"<")!=0; count++){
+    	    }
+	        count++;
+	        for(count2; count2 < count - 1; count2++){
+	        temp[count2] = fixedComm[count2];
+            }
+	        temp[count2] = NULL;
+	        int fd;
+	        fd = open("pipe.txt", O_RDONLY, 0644);
+	        dup2(fd,STDIN_FILENO);
+	        execvp(temp[0],temp);
+	    }
+	}
+>>>>>>> 79e1c2ddf2130512b2ddf0af5ae060cf71626380
 	  else{
 	  //printf("I'm here 1\n");
 	  execvp(fixedComm[0],fixedComm);
