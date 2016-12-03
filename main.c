@@ -19,13 +19,13 @@ void sigHandle(int sigNum){
     printf("My parent PID: %d\n",getppid());
   }
 }
-void rmChar (char myarray[], int start){
+void rmChar (char arr[], int start){
     char temp;
     int i;
-    for (i=start; i < sizeof(myarray)/sizeof(myarray[0]); i++){
-        temp = myarray[i];
-        myarray[i] = myarray[i+1];
-        myarray[i+1] = temp;
+    for (i=start; i < sizeof(arr)/sizeof(arr[0]); i++){
+        temp = arr[i];
+        arr[i] = arr[i+1];
+        arr[i+1] = temp;
     }
 }
 void commCentral(char *comm){
