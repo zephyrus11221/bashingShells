@@ -48,6 +48,9 @@ void commCentral(char *comm){
 	  if(strchr(fixedComm[check],'>')!= NULL){
 	    checker = 1;
 	  }
+	  if(strchr(fixedComm[check],'<')!= NULL){
+	    checker = 2;
+	  }
 	}
 	if(checker == 1){
 	  //printf("I'm here 2\n");
@@ -70,8 +73,27 @@ void commCentral(char *comm){
 	    dup2(storage,STDOUT_FILENO);
 	    close(fd);
 	}
-      
-	else{
+	if(checker == 2){
+	  int storage = dup(STDIN_FILENO);
+	  int count = 0;
+	  int count2 = 0;
+	  char * temp[256];
+	  for(count; strcmp(fixedComm[count],"<")!=0; count++){
+	  }
+	  count++;
+	  char * fileName = fixedComm[count];
+	  for(count2; count2 < count - 1; count2++){
+	    temp[count2] = fixedComm[count2];
+	  }
+	  temp[count2] = NULL;
+	  int fd;
+	  fd = open(fileName, O_RDONLY, 0644);
+	  dup2(fd,STDIN_FILENO);
+	  execvp(temp[0],temp);
+	  dup2(storage,STDIN_FILENO);
+	  close(fd);
+	}
+	  else{
 	  //printf("I'm here 1\n");
 	  execvp(fixedComm[0],fixedComm);
 	}
