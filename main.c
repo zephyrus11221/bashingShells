@@ -40,26 +40,39 @@ void commCentral(char *comm){
     else{
       int f;
       f = fork();
+      int check;
+      int checker;
       if(!f){
-	//	printf("I'm here 1\n");
-	if(strchr(fixedComm,'>')!=0){
-	  printf("I'm here 2\n");
-	  int storage = dup(STDOUT_FILENO);
-	  int count = 0;
-	  for(count; strcmp(fixedComm[count],">")!=0; count++){
+       	//printf("I'm here 1\n");
+        for(check = 0; fixedComm[check]!= NULL; check++){
+	  if(strchr(fixedComm[check],'>')!= NULL){
+	    checker = 1;
 	  }
-	  count++;
-	  char * fileName = fixedComm[count];
-	  printf("%s\n",fileName);
-	  int fd;
-	  fd = open(fileName, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	  dup2(fd,STDOUT_FILENO);
-	  execvp(fixedComm[0],fixedComm);
-	  dup2(storage,STDOUT_FILENO);
-	  close(fd);
 	}
+	if(checker == 1){
+	  //printf("I'm here 2\n");
+	    int storage = dup(STDOUT_FILENO);
+	    int count = 0;
+	    int count2 = 0;
+	    char * temp[256];
+	    for(count; strcmp(fixedComm[count],">")!=0; count++){
+	    }
+	    count++;
+	    char * fileName = fixedComm[count];
+	    for(count2; count2 < count - 1; count2++){
+	      temp[count2] = fixedComm[count2];
+	    }
+	    temp[count2] = NULL;
+	    int fd;
+	    fd = open(fileName, O_RDWR | O_CREAT, 0644);
+	    dup2(fd,STDOUT_FILENO);
+	    execvp(temp[0],temp);
+	    dup2(storage,STDOUT_FILENO);
+	    close(fd);
+	}
+      
 	else{
-	  //  printf("I'm here 1\n");
+	  //printf("I'm here 1\n");
 	  execvp(fixedComm[0],fixedComm);
 	}
       }
